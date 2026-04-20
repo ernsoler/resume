@@ -451,12 +451,18 @@ body {
 /* ── PRINT ── */
 @media print {
   body { background: white; padding: 0; }
+
+  /* Hide interactive / non-essential elements */
   .sidebar-controls { display: none; }
+  .download-btn     { display: none; }
+  #projects         { display: none; }
+
   .page {
     max-width: 100%;
     box-shadow: none;
     grid-template-columns: 220px 1fr;
   }
+
   [data-theme="dark"] {
     --page-bg: #fff; --white: #fff; --sidebar-bg: #f4f4f4;
     --text: #1a1a1a; --muted: #555; --light: #888;
@@ -464,6 +470,25 @@ body {
     --card-bg: #fff; --tag-bg: #eef2fb; --tag-border: rgba(37,99,235,0.22);
     --accent-muted: rgba(37,99,235,0.08);
   }
+
+  /* Experience starts on a fresh page */
+  #experience {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  /* Keep each experience entry together */
+  .exp-entry {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Keep sidebar sections from splitting mid-print */
+  .s-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
   .project-card {
     box-shadow: none !important;
     transform: none !important;
