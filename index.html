@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ernesto Soler Calana — Senior Backend Engineer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 17px; }
+
+    /* ── THEMES ── */
+    [data-theme="light"] {
+      --page-bg:    #e0e0e0;
+      --white:      #ffffff;
+      --sidebar-bg: #f4f4f4;
+      --text:       #1a1a1a;
+      --muted:      #555;
+      --light:      #888;
+      --border:     #ddd;
+      --accent:     #2563eb;
+      --accent-muted: rgba(37,99,235,0.08);
+      --tag-bg:     #eef2fb;
+      --tag-border: rgba(37,99,235,0.22);
+      --card-bg:    #fafbff;
+      --shadow:     rgba(0,0,0,0.14);
+      --shadow-hover: rgba(37,99,235,0.14);
+      --btn-bg:     #ffffff;
+      --btn-text:   #1a1a1a;
+      --btn-border: #ccc;
+    }
+
+    [data-theme="dark"] {
+      --page-bg:    #111318;
+      --white:      #1a1d27;
+      --sidebar-bg: #14161f;
+      --text:       #e2e8f0;
+      --muted:      #9aa3b2;
+      --light:      #6b7280;
+      --border:     #2a2f45;
+      --accent:     #4f8ef7;
+      --accent-muted: rgba(79,142,247,0.10);
+      --tag-bg:     #1e2235;
+      --tag-border: rgba(79,142,247,0.28);
+      --card-bg:    #1e2235;
+      --shadow:     rgba(0,0,0,0.5);
+      --shadow-hover: rgba(79,142,247,0.18);
+      --btn-bg:     #22263a;
+      --btn-text:   #e2e8f0;
+      --btn-border: #3a4060;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--page-bg);
+      color: var(--text);
+      line-height: 1.55;
+      padding: 2rem 1rem 4rem;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ── PAGE ── */
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      background: var(--white);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      box-shadow: 0 6px 48px var(--shadow);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      padding: 2.5rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .location {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .work-auth {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      color: #0d9488;
+      background: rgba(13,148,136,0.09);
+      border: 1px solid rgba(13,148,136,0.28);
+      border-radius: 4px;
+      padding: 0.22rem 0.6rem;
+      margin-top: 0.55rem;
+    }
+
+    [data-theme="dark"] .work-auth {
+      color: #2dd4bf;
+      background: rgba(45,212,191,0.09);
+      border-color: rgba(45,212,191,0.24);
+    }
+
+    /* ── SIDEBAR HERO ── */
+    .sidebar-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .sidebar-controls {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .icon-btn {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border: 1px solid var(--btn-border);
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 1px 4px var(--shadow);
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .photo-circle {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      color: var(--light);
+      text-align: center;
+      border: 3px solid var(--white);
+      box-shadow: 0 2px 14px var(--shadow);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+    .sidebar-name {
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 0.3rem;
+    }
+
+    .sidebar-role {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.48rem 1.4rem;
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      margin-bottom: 0.2rem;
+    }
+
+    .download-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Sidebar sections */
+    .s-section { display: flex; flex-direction: column; gap: 0.65rem; }
+
+    .s-title {
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      padding-bottom: 0.35rem;
+      border-bottom: 2px solid var(--accent);
+      width: fit-content;
+    }
+
+    .contact-list { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-all;
+      transition: color 0.2s;
+    }
+
+    .contact-item:hover { color: var(--accent); }
+    .contact-item svg { flex-shrink: 0; color: var(--accent); }
+
+    .edu-course { font-size: 0.83rem; font-weight: 600; color: var(--text); }
+    .edu-school  { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+    }
+
+    .skill-list li {
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding-left: 0.85rem;
+      position: relative;
+    }
+
+    .skill-list li::before { content: '•'; position: absolute; left: 0; color: var(--accent); }
+
+    /* ── MAIN ── */
+    .main {
+      padding: 2.5rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .m-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 2px solid var(--accent);
+      width: fit-content;
+    }
+
+    #profile p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.78;
+    }
+
+    /* Skills grid */
+    .skills-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 2rem;
+    }
+
+    .skill-group-title {
+      font-size: 0.77rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+
+    /* Experience */
+    .exp-list { display: flex; flex-direction: column; gap: 1.6rem; }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .exp-title  { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+    .exp-date   { font-size: 0.76rem; color: var(--light); }
+    .exp-company {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .company-logo {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      object-fit: contain;
+      background: #fff;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .exp-stack {
+      font-size: 0.7rem;
+      color: var(--light);
+      font-style: italic;
+      margin-bottom: 0.55rem;
+      line-height: 1.5;
+    }
+
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+
+    .exp-bullets li {
+      font-size: 0.82rem;
+      color: var(--muted);
+      padding-left: 1rem;
+      position: relative;
+      line-height: 1.55;
+    }
+
+    .exp-bullets li::before { content: '•'; position: absolute; left: 0; color: var(--accent); }
+
+    /* ── PROJECTS ── */
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .project-card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 1.15rem 1.3rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      box-shadow: 0 1px 4px var(--shadow);
+      transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.18s ease;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      border-top-color: var(--accent);
+      box-shadow: 0 6px 20px var(--shadow-hover), 0 1px 4px var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    /* Category badge — top-right corner */
+    .project-badge {
+      position: absolute;
+      top: 0.65rem;
+      right: 0.75rem;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-muted);
+      border: 1px solid var(--tag-border);
+      border-radius: 3px;
+      padding: 0.14rem 0.45rem;
+      line-height: 1.6;
+    }
+
+    .project-card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+      /* leave right-side room for the badge */
+      padding-right: 5.5rem;
+    }
+
+    .project-name {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .project-gh-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+
+    .project-gh-link svg { opacity: 0.6; flex-shrink: 0; }
+
+    .project-gh-link:hover {
+      color: var(--accent);
+    }
+    .project-gh-link:hover svg { opacity: 1; }
+
+    .project-tagline {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+
+    .tag {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--tag-bg);
+      border: 1px solid var(--tag-border);
+      border-radius: 4px;
+      padding: 0.16rem 0.5rem;
+      letter-spacing: 0.02em;
+      line-height: 1.55;
+    }
+
+    .project-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-top: 0.05rem;
+    }
+
+    .project-bullets li {
+      font-size: 0.79rem;
+      color: var(--muted);
+      padding-left: 1rem;
+      position: relative;
+      line-height: 1.55;
+    }
+
+    .project-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 0.68rem; top: 0.06em; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; padding: 0; }
+      .sidebar-controls { display: none; }
+      .page {
+        max-width: 100%;
+        box-shadow: none;
+        grid-template-columns: 220px 1fr;
+      }
+      [data-theme="dark"] {
+        --page-bg: #fff; --white: #fff; --sidebar-bg: #f4f4f4;
+        --text: #1a1a1a; --muted: #555; --light: #888;
+        --border: #ddd; --accent: #2563eb;
+        --card-bg: #fff; --tag-bg: #eef2fb; --tag-border: rgba(37,99,235,0.22);
+        --accent-muted: rgba(37,99,235,0.08);
+      }
+      /* Flatten cards for print — no shadows, no hover, no transform */
+      .project-card {
+        box-shadow: none !important;
+        transform: none !important;
+        border: 1px solid #ddd;
+        border-top: 2px solid #2563eb;
+        background: #fff;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .project-badge {
+        background: transparent;
+        border-color: #2563eb;
+        color: #2563eb;
+      }
+      .tag {
+        border-color: #c7d7f8;
+        background: #eef2fb;
+      }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      body { padding: 0 0 4rem; }
+      .page { grid-template-columns: 1fr; box-shadow: none; }
+      .sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+      .skills-cols { grid-template-columns: 1fr; }
+      .project-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar">
+
+      <!-- Hero: controls + photo + name + download -->
+      <div class="sidebar-hero">
+        <div class="sidebar-controls">
+          <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+            <svg id="theme-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </button>
+        </div>
+        <div class="photo-circle">
+          <img src="imgs/ernesto.JPG" alt="Ernesto Soler Calana">
+        </div>
+        <div class="sidebar-name">Ernesto Soler Calana</div>
+        <div class="sidebar-role">Senior Backend Engineer</div>
+        <button class="download-btn" onclick="downloadPDF()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download PDF
+        </button>
+        <div class="location" style="margin-top:0.6rem;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Pembroke Pines, FL
+        </div>
+        <span class="work-auth">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Authorized to work in the U.S.
+        </span>
+      </div>
+
+      <div class="s-section">
+        <span class="s-title">Contact</span>
+        <div class="contact-list">
+          <a class="contact-item" href="mailto:ernesoler92@gmail.com">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            ernesoler92@gmail.com
+          </a>
+          <a class="contact-item" href="tel:+13059566653">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+            (305) 956-6653
+          </a>
+          <a class="contact-item" href="https://www.linkedin.com/in/ernesto-soler-cala%C3%B1a-a4a91b1a6/" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a class="contact-item" href="https://github.com/ernsoler" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            github.com/ernsoler
+          </a>
+        </div>
+      </div>
+
+      <div class="s-section">
+        <span class="s-title">Education</span>
+        <div>
+          <div class="edu-course">B.S. in Information Technology</div>
+          <div class="edu-school">University of Information Sciences (UCI)<br>Havana, Cuba</div>
+        </div>
+      </div>
+
+      <div class="s-section">
+        <span class="s-title">Languages</span>
+        <ul class="skill-list">
+          <li>Python 3.x (expert)</li>
+          <li>SQL</li>
+          <li>Bash</li>
+          <li>Ruby</li>
+          <li>C#</li>
+        </ul>
+      </div>
+
+      <div class="s-section">
+        <span class="s-title">Frameworks</span>
+        <ul class="skill-list">
+          <li>FastAPI</li>
+          <li>Flask</li>
+          <li>Apache Airflow</li>
+          <li>PySpark (Glue Jobs)</li>
+        </ul>
+      </div>
+
+      <div class="s-section">
+        <span class="s-title">Soft Skills</span>
+        <ul class="skill-list">
+          <li>Technical leadership</li>
+          <li>Agile / Scrum</li>
+          <li>Code reviews &amp; mentoring</li>
+          <li>Bilingual (EN / ES)</li>
+        </ul>
+      </div>
+
+    </aside>
+
+    <!-- ══ MAIN ══ -->
+    <main class="main">
+
+      <section id="profile">
+        <div class="m-title">Profile</div>
+        <p>Senior Backend Engineer with 9+ years of expertise in Python, AWS event-driven systems, and workflow orchestration.
+        Proven track record building production-grade data pipelines, microservices, and third-party integrations — including
+        ServiceNow, SQS/EventBridge automation, and Airflow-based ETL systems. Experienced technical leader in Agile teams
+        with a strong foundation in clean-code principles, observability, and end-to-end DevOps ownership. Adept at
+        translating complex operational workflows into reliable, scalable backend services.</p>
+      </section>
+
+      <section id="expertise">
+        <div class="m-title">Expertise</div>
+        <div class="skills-cols">
+          <div>
+            <div class="skill-group-title">AWS Services</div>
+            <ul class="skill-list">
+              <li>Lambda · SQS · SNS · EventBridge</li>
+              <li>Step Functions · API Gateway</li>
+              <li>Glue · Athena · S3 · Redshift</li>
+              <li>DynamoDB · KMS · IAM · CloudWatch</li>
+            </ul>
+          </div>
+          <div>
+            <div class="skill-group-title">IaC &amp; DevOps</div>
+            <ul class="skill-list">
+              <li>Terraform · AWS CDK</li>
+              <li>CloudFormation · StackSets</li>
+              <li>GitHub Actions · GitLab CI</li>
+              <li>Docker · Serverless Framework</li>
+            </ul>
+          </div>
+          <div>
+            <div class="skill-group-title">Databases</div>
+            <ul class="skill-list">
+              <li>DynamoDB · PostgreSQL · MySQL</li>
+              <li>Elasticsearch · MemSQL</li>
+              <li>AWS RDS · Redshift</li>
+            </ul>
+          </div>
+          <div>
+            <div class="skill-group-title">Integrations</div>
+            <ul class="skill-list">
+              <li>ServiceNow · REST APIs</li>
+              <li>DLQ handling · retry logic</li>
+              <li>Async workflows</li>
+              <li>ELK Stack · Logstash · Kibana</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience">
+        <div class="m-title">Experience</div>
+        <div class="exp-list">
+
+          <div class="exp-entry">
+            <div class="exp-header">
+              <span class="exp-title">Senior Python &amp; AWS Developer</span>
+              <span class="exp-date">Dec 2023 – Present</span>
+            </div>
+            <div class="exp-company"><img class="company-logo" src="imgs/companies/apex_systems_logo.jpeg" alt="Apex Systems">Apex Systems &nbsp;·&nbsp; Client: Centene</div>
+            <div class="exp-stack">Python · Lambda · SQS · SNS · EventBridge · Step Functions · Glue · DynamoDB · S3 · KMS · Terraform · Flask · ServiceNow · API Gateway</div>
+            <ul class="exp-bullets">
+              <li>Architected a centralized Error Handler: EventBridge captures pipeline failures, triggers Lambda processors that classify, encrypt (KMS), persist to S3, and auto-create ServiceNow incidents — eliminating manual error triage.</li>
+              <li>Designed event-driven microservices using SQS → Lambda → DynamoDB with DLQ handling, retry logic, and full CloudWatch observability.</li>
+              <li>Built REST APIs with FastAPI/Flask on API Gateway + Lambda with clean-code principles and pytest coverage.</li>
+              <li>Authored reusable Terraform IaC modules for multi-account deployments via CloudFormation StackSets, enforcing KMS encryption and IAM least-privilege.</li>
+              <li>Built multi-vendor ETL ingestion module (S3 + EventBridge + Lambda + Glue/PySpark) packaged as a reusable Python library with Poetry and a Terraform module.</li>
+            </ul>
+          </div>
+
+          <div class="exp-entry">
+            <div class="exp-header">
+              <span class="exp-title">Senior Python Developer &amp; Technical Leader</span>
+              <span class="exp-date">Aug 2022 – Dec 2023</span>
+            </div>
+            <div class="exp-company"><img class="company-logo" src="imgs/companies/boldteam_logo.jpeg" alt="Bold.SAS">Bold.SAS</div>
+            <div class="exp-stack">Python · Lambda · SQS · Step Functions · AWS CDK · API Gateway · DynamoDB · S3 · Flask · Domain-Driven Design</div>
+            <ul class="exp-bullets">
+              <li>Led the Acquiring Banking Team — designed event-driven service architecture for high-volume payment network messaging using SQS + Step Functions with idempotency and retry guarantees.</li>
+              <li>Drove migration from legacy database schemas to Domain-Driven Design, improving system reliability, scalability, and maintainability of microservices.</li>
+              <li>Mentored engineers on AWS messaging patterns, code quality standards, and test-driven development; conducted systematic code reviews across the team.</li>
+              <li>Served as technical decision-maker aligning engineering execution with product stakeholders; contributed to architectural design sessions and sprint planning in Agile environment.</li>
+            </ul>
+          </div>
+
+          <div class="exp-entry">
+            <div class="exp-header">
+              <span class="exp-title">Senior Data Engineer &amp; AWS Developer</span>
+              <span class="exp-date">Sep 2021 – Aug 2022</span>
+            </div>
+            <div class="exp-company"><img class="company-logo" src="imgs/companies/zebrands_logo.jpeg" alt="Zebrands">Zebrands</div>
+            <div class="exp-stack">Python · Lambda · SQS · SNS · EventBridge · Glue · Athena · S3 · QuickSight · ECR · CloudFormation · GitHub Actions · Docker · Selenium · Pandas · PyArrow</div>
+            <ul class="exp-bullets">
+              <li>Architected an event-driven data pipeline using EventBridge → Lambda → S3 → Glue → Athena, replacing over-provisioned batch jobs with real-time processing — reducing AWS costs by 75%.</li>
+              <li>Implemented pub/sub patterns with SNS and SQS for decoupled, scalable data ingestion across multiple internal systems and external APIs (Amazon Vendor Central).</li>
+              <li>Built and managed Apache Airflow DAGs for scheduled/event-driven ETL including vectorization pipelines.</li>
+              <li>Automated CI/CD pipelines with GitHub Actions, Docker, and ECR; configured CloudWatch alarms and dashboards for proactive pipeline health monitoring and incident detection.</li>
+              <li>Built Selenium-based automated ETL scrapers integrating external data sources and delivering clean datasets to downstream analytics consumers.</li>
+              <li>Produced QuickSight observability dashboards translating service telemetry and business data into actionable executive-level insights.</li>
+            </ul>
+          </div>
+
+          <div class="exp-entry">
+            <div class="exp-header">
+              <span class="exp-title">Backend Developer &amp; Data Engineer</span>
+              <span class="exp-date">Jul 2019 – Sep 2021</span>
+            </div>
+            <div class="exp-company"><img class="company-logo" src="imgs/companies/elasbit_logo.jpeg" alt="Elasbit">Elasbit – Fivana Project</div>
+            <div class="exp-stack">Python · Lambda · SQS · SNS · Step Functions · API Gateway · AppSync · DynamoDB · Redshift · Elasticsearch · Logstash · Kibana · CloudFormation · Serverless · C# · Ruby</div>
+            <ul class="exp-bullets">
+              <li>Developed event-driven microservices and REST APIs in Python on AWS, including SQS/SNS-based messaging for asynchronous business workflows across distributed services.</li>
+              <li>Designed and operated ETL pipelines with the ELK stack; authored a custom Logstash input plugin to extract data from Elasticsearch indexes and feed downstream reporting.</li>
+              <li>Built analytics dashboards in Grafana and AWS QuickSight; created reporting views and stored procedures in MemSQL for business intelligence reporting.</li>
+              <li>Contributed to code reviews, Agile sprint delivery, and system documentation in a distributed international engineering team.</li>
+            </ul>
+          </div>
+
+          <div class="exp-entry">
+            <div class="exp-header">
+              <span class="exp-title">Python Developer</span>
+              <span class="exp-date">Nov 2018 – Jul 2019</span>
+            </div>
+            <div class="exp-company"><img class="company-logo" src="imgs/companies/merchise_autrement__logo.jpeg" alt="Merchise Autrement">Merchise Autrement</div>
+            <div class="exp-stack">Python 3.x · Odoo</div>
+            <ul class="exp-bullets">
+              <li>Developed collections and advance payment modules for Odoo; migrated from Odoo 10 to Odoo 12.</li>
+            </ul>
+          </div>
+
+          <div class="exp-entry">
+            <div class="exp-header">
+              <span class="exp-title">Backend Developer</span>
+              <span class="exp-date">Sep 2016 – Nov 2018</span>
+            </div>
+            <div class="exp-company">Center for Genetic Engineering and Biotechnology (CIGB)</div>
+            <div class="exp-stack">C# · .NET · PostgreSQL · Clean Architecture</div>
+            <ul class="exp-bullets">
+              <li>Built a controlled-environment management system and desktop application for incubator data processing using Clean Architecture and PostgreSQL.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="projects">
+        <div class="m-title">Personal Projects</div>
+        <div class="project-grid">
+
+          <div class="project-card">
+            <span class="project-badge">Open Source</span>
+            <div class="project-card-header">
+              <span class="project-name">LeaseAI</span>
+              <a class="project-gh-link" href="https://github.com/ernsoler/leaseai" target="_blank" rel="noopener">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                ernsoler/leaseai
+              </a>
+            </div>
+            <p class="project-tagline">Upload a PDF lease agreement — get a structured AI risk report in under 90 seconds.</p>
+            <div class="project-tags">
+              <span class="tag">Python 3.12</span>
+              <span class="tag">AWS CDK</span>
+              <span class="tag">Lambda</span>
+              <span class="tag">SQS</span>
+              <span class="tag">DynamoDB</span>
+              <span class="tag">S3</span>
+              <span class="tag">Claude API</span>
+              <span class="tag">React</span>
+              <span class="tag">TypeScript</span>
+            </div>
+            <ul class="project-bullets">
+              <li>Async job pipeline: presigned S3 upload → SQS → Lambda processor → DynamoDB, with frontend polling and 90s p95 turnaround.</li>
+              <li>Multi-provider AI routing (Claude, OpenAI, Gemini, Ollama) with Pydantic validation gate — bad AI responses mark the job failed rather than storing corrupt data.</li>
+              <li>Fully deployable serverless SaaS with CDK IaC, CloudWatch alarms, DLQ monitoring, and GitHub Actions CI.</li>
+            </ul>
+          </div>
+
+          <div class="project-card">
+            <span class="project-badge">Reference Arch</span>
+            <div class="project-card-header">
+              <span class="project-name">DDD · Python · AWS</span>
+              <a class="project-gh-link" href="https://github.com/ernsoler/ddd-python-aws" target="_blank" rel="noopener">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                ernsoler/ddd-python-aws
+              </a>
+            </div>
+            <p class="project-tagline">Production-grade DDD reference on AWS Serverless — aggregates, repositories, unit of work, and domain events in a hexagonal architecture.</p>
+            <div class="project-tags">
+              <span class="tag">Python 3.12</span>
+              <span class="tag">DDD</span>
+              <span class="tag">Lambda</span>
+              <span class="tag">DynamoDB</span>
+              <span class="tag">EventBridge</span>
+              <span class="tag">Serverless</span>
+              <span class="tag">Pydantic v2</span>
+              <span class="tag">moto</span>
+            </div>
+            <ul class="project-bullets">
+              <li>Domain layer has zero AWS dependencies — infrastructure fully isolated behind Protocol-based adapters, making every business rule independently testable.</li>
+              <li>Generic DynamoDB repository with optimistic locking (version field), atomic UoW transactions, and post-commit EventBridge event publishing.</li>
+              <li>Test suite uses moto to spin up real DynamoDB + EventBridge in-process with the exact same schema as the IaC — no mocks, full fidelity.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      document.getElementById('theme-label').textContent = isDark ? 'Dark mode' : 'Light mode';
+      const icon = document.getElementById('theme-icon');
+      icon.innerHTML = isDark
+        ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+        : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }
+
+    function downloadPDF() {
+      window.print();
+    }
+
+    // Restore saved theme
+    const saved = localStorage.getItem('theme');
+    if (saved) {
+      document.documentElement.setAttribute('data-theme', saved);
+      document.getElementById('theme-label').textContent = saved === 'dark' ? 'Light mode' : 'Dark mode';
+      if (saved === 'dark') {
+        document.getElementById('theme-icon').innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+      }
+    }
+  </script>
+</body>
+</html>
